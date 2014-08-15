@@ -1,5 +1,5 @@
 /* utils/logger.h
-** 
+**
 ** Copyright 2007, The Android Open Source Project
 **
 ** This file is dual licensed.  It may be redistributed and/or modified
@@ -43,10 +43,10 @@ struct logger_entry_v2 {
     char        msg[0];    /* the entry's payload */
 };
 
-#define LOGGER_LOG_MAIN		"log/main"
-#define LOGGER_LOG_RADIO	"log/radio"
-#define LOGGER_LOG_EVENTS	"log/events"
-#define LOGGER_LOG_SYSTEM	"log/system"
+#define LOGGER_LOG_MAIN         "alog/main"
+#define LOGGER_LOG_RADIO        "alog/radio"
+#define LOGGER_LOG_EVENTS       "alog/events"
+#define LOGGER_LOG_SYSTEM       "alog/system"
 
 /*
  * The maximum size of the log entry payload that can be
@@ -54,27 +54,27 @@ struct logger_entry_v2 {
  * more than this amount to /dev/log/* will result in a
  * truncated log entry.
  */
-#define LOGGER_ENTRY_MAX_PAYLOAD	4076
+#define LOGGER_ENTRY_MAX_PAYLOAD        4076
 
 /*
  * The maximum size of a log entry which can be read from the
  * kernel logger driver. An attempt to read less than this amount
  * may result in read() returning EINVAL.
  */
-#define LOGGER_ENTRY_MAX_LEN		(5*1024)
+#define LOGGER_ENTRY_MAX_LEN            (5*1024)
 
 #ifdef HAVE_IOCTL
 
 #include <sys/ioctl.h>
 
-#define __LOGGERIO	0xAE
+#define __LOGGERIO      0xAE
 
-#define LOGGER_GET_LOG_BUF_SIZE		_IO(__LOGGERIO, 1) /* size of log */
-#define LOGGER_GET_LOG_LEN		_IO(__LOGGERIO, 2) /* used log len */
-#define LOGGER_GET_NEXT_ENTRY_LEN	_IO(__LOGGERIO, 3) /* next entry len */
-#define LOGGER_FLUSH_LOG		_IO(__LOGGERIO, 4) /* flush log */
-#define LOGGER_GET_VERSION		_IO(__LOGGERIO, 5) /* abi version */
-#define LOGGER_SET_VERSION		_IO(__LOGGERIO, 6) /* abi version */
+#define LOGGER_GET_LOG_BUF_SIZE         _IO(__LOGGERIO, 1) /* size of log */
+#define LOGGER_GET_LOG_LEN              _IO(__LOGGERIO, 2) /* used log len */
+#define LOGGER_GET_NEXT_ENTRY_LEN       _IO(__LOGGERIO, 3) /* next entry len */
+#define LOGGER_FLUSH_LOG                _IO(__LOGGERIO, 4) /* flush log */
+#define LOGGER_GET_VERSION              _IO(__LOGGERIO, 5) /* abi version */
+#define LOGGER_SET_VERSION              _IO(__LOGGERIO, 6) /* abi version */
 
 #endif // HAVE_IOCTL
 

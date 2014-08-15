@@ -176,7 +176,7 @@ static void deleteFakeFd(int fd)
  */
 static void configureInitialState(const char* pathName, LogState* logState)
 {
-    static const int kDevLogLen = sizeof("/dev/log/") - 1;
+    static const int kDevLogLen = sizeof("/dev/alog/") - 1;
 
     logState->debugName = strdup(pathName);
 
@@ -493,7 +493,7 @@ static void showLog(LogState *state,
         }
         numLines -= 1;
     }
-    
+
     /*
      * Write the entire message to the log file with a single writev() call.
      * We need to use this rather than a collection of printf()s on a FILE*
@@ -512,10 +512,10 @@ static void showLog(LogState *state,
         int cc = writev(fileno(stderr), vec, v-vec);
 
         if (cc == totalLen) break;
-        
+
         if (cc < 0) {
             if(errno == EINTR) continue;
-            
+
                 /* can't really log the failure; for now, throw out a stderr */
             fprintf(stderr, "+++ LOG: write failed (errno=%d)\n", errno);
             break;
