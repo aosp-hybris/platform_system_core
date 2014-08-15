@@ -133,8 +133,7 @@ on fs
     mount yaffs2 mtd@cache /cache nosuid nodev
 
 on post-fs
-    # once everything is setup, no need to modify /
-    mount rootfs rootfs / ro remount
+
     # mount shared so changes propagate into child namespaces
     mount rootfs rootfs / shared rec
     mount tmpfs tmpfs /mnt/secure private rec
