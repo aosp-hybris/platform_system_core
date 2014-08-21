@@ -860,7 +860,7 @@ int main(int argc, char **argv)
      * let the rc file figure out the rest.
      */
     if (stat("/sbin/recovery", &s) == 0) {
-        /* Only create and mount everything if we're in recovery mode */'
+        /* Only create and mount everything if we're in recovery mode */
         mkdir("/dev", 0755);
         mkdir("/proc", 0755);
         mkdir("/sys", 0755);
