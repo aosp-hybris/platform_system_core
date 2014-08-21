@@ -469,3 +469,8 @@ service mdnsd /system/bin/mdnsd
     socket mdnsd stream 0660 mdnsr inet
     disabled
     oneshot
+
+# Create flags to make systemd or lxc know boot android done
+service droid_init_done /system/bin/touch /dev/_android_init_done
+    class late_start
+    oneshot
