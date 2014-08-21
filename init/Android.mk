@@ -35,6 +35,7 @@ LOCAL_UNSTRIPPED_PATH := $(TARGET_ROOT_OUT_UNSTRIPPED)
 
 LOCAL_STATIC_LIBRARIES := libfs_mgr libcutils libc
 
+HAVE_SELINUX := false
 ifeq ($(HAVE_SELINUX),true)
 LOCAL_STATIC_LIBRARIES += libselinux
 LOCAL_C_INCLUDES += external/libselinux/include
