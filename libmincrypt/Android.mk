@@ -13,6 +13,5 @@ LOCAL_MODULE := libmincrypt
 LOCAL_SRC_FILES := rsa.c rsa_e_3.c rsa_e_f4.c sha.c
 include $(BUILD_HOST_STATIC_LIBRARY)
 
-
 # TODO: drop the hyphen once these are checked in
-include $(LOCAL_PATH)/tools/Android.mk
+#include $(LOCAL_PATH)/tools/Android.mk
