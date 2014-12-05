@@ -854,6 +854,7 @@ int main(int argc, char **argv)
     int signal_fd_init = 0;
     int keychord_fd_init = 0;
     bool is_charger = false;
+    const char *pval;
 
     if (!strcmp(basename(argv[0]), "ueventd"))
         return ueventd_main(argc, argv);
@@ -864,18 +865,28 @@ int main(int argc, char **argv)
     /* clear the umask */
     umask(0);
 
+    /* aosp-hybris will generate ro.hybris.bootinternal to make
+     * android not mount everything when execute in lxc
+     * or run directly in linux rootfs.
+     *
+     * This propertie will automatically generate by yocto when
+     * building the android-system package.
+     */
+    pval = property_get("ro.hybris.bootinternal");
+    if (!pval) {
         /* Get the basic filesystem setup we need put
          * together in the initramdisk on / and then we'll
          * let the rc file figure out the rest.
          */
-    mkdir("/dev", 0755);
-    mkdir("/proc", 0755);
-    mkdir("/sys", 0755);
+        mkdir("/dev", 0755);
+        mkdir("/proc", 0755);
+        mkdir("/sys", 0755);
 
-    mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, "mode=0755");
-    mkdir("/dev/pts", 0755);
-    mkdir("/dev/socket", 0755);
-    mount("devpts", "/dev/pts", "devpts", 0, NULL);
+        mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, "mode=0755");
+        mkdir("/dev/pts", 0755);
+        mkdir("/dev/socket", 0755);
+        mount("devpts", "/dev/pts", "devpts", 0, NULL);
+    }
     mount("proc", "/proc", "proc", 0, NULL);
     mount("sysfs", "/sys", "sysfs", 0, NULL);
 
