@@ -671,9 +671,19 @@ static void export_kernel_boot_props(void)
         property_set(prop_map[i].dest_prop, pval ?: prop_map[i].def_val);
     }
 
-    pval = property_get("ro.boot.console");
-    if (pval)
-        strlcpy(console, pval, sizeof(console));
+    /* aosp-hybris will generate ro.hybris.bootinternal to make
+     * android not use the hardware/system console when execute in lxc
+     * or run directly in linux rootfs.
+     *
+     * This propertie will automatically generate by yocto when
+     * building the android-system package.
+     */
+    pval = property_get("ro.hybris.bootinternal");
+    if (!pval) {
+        pval = property_get("ro.boot.console");
+        if (pval)
+            strlcpy(console, pval, sizeof(console));
+    }
 
     /* save a copy for init's usage during boot */
     strlcpy(bootmode, property_get("ro.bootmode"), sizeof(bootmode));
