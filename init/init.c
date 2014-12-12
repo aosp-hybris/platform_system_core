@@ -943,6 +943,11 @@ int main(int argc, char **argv)
     INFO("reading config file\n");
     init_parse_config_file("/init.rc");
 
+    /* aosp-hybris move original ramdisk files to /android dir, so we
+     * also need to parse this dirs.
+     */
+    init_parse_config_file("/android/init.rc");
+
     action_for_each_trigger("early-init", action_add_queue_tail);
 
     queue_builtin_action(wait_for_coldboot_done_action, "wait_for_coldboot_done");

@@ -84,6 +84,14 @@ int ueventd_main(int argc, char **argv)
     snprintf(tmp, sizeof(tmp), "/ueventd.%s.rc", hardware);
     ueventd_parse_config_file(tmp);
 
+    /* aosp-hybris move original ramdisk files to /android dir, so we
+     * also need to parse this dirs.
+     */
+    ueventd_parse_config_file("/android/ueventd.rc");
+
+    snprintf(tmp, sizeof(tmp), "/android/ueventd.%s.rc", hardware);
+    ueventd_parse_config_file(tmp);
+
     device_init();
 
     ufd.events = POLLIN;
