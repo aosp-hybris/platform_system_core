@@ -731,6 +731,7 @@ static void export_kernel_boot_props(void)
         { "ro.boot.baseband", "ro.baseband", "unknown", },
         { "ro.boot.bootloader", "ro.bootloader", "unknown", },
     };
+    struct stat s;
 
     for (i = 0; i < ARRAY_SIZE(prop_map); i++) {
         ret = property_get(prop_map[i].src_prop, tmp);
@@ -740,9 +741,13 @@ static void export_kernel_boot_props(void)
             property_set(prop_map[i].dest_prop, prop_map[i].def_val);
     }
 
-    ret = property_get("ro.boot.console", tmp);
-    if (ret)
-        strlcpy(console, tmp, sizeof(console));
+    /* Do not make android use real console device when /dev/__internal__ exist.
+     */
+    if (0 != stat("/dev/__internal__", &s)) {
+        ret = property_get("ro.boot.console", tmp);
+        if (ret)
+            strlcpy(console, tmp, sizeof(console));
+    }
 
     /* save a copy for init's usage during boot */
     property_get("ro.bootmode", tmp);
