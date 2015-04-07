@@ -970,6 +970,7 @@ int main(int argc, char **argv)
     int signal_fd_init = 0;
     int keychord_fd_init = 0;
     bool is_charger = false;
+    struct stat s;
 
     if (!strcmp(basename(argv[0]), "ueventd"))
         return ueventd_main(argc, argv);
@@ -983,15 +984,21 @@ int main(int argc, char **argv)
         /* Get the basic filesystem setup we need put
          * together in the initramdisk on / and then we'll
          * let the rc file figure out the rest.
+         *
+         * Skip mount dev, sys when /dev/__internal__ exist, this is
+         * most use in lxc or execute android code under linux.
          */
-    mkdir("/dev", 0755);
-    mkdir("/proc", 0755);
-    mkdir("/sys", 0755);
+    if (0 != stat("/dev/__internal__", &s)) {
+        mkdir("/dev", 0755);
+        mkdir("/proc", 0755);
+        mkdir("/sys", 0755);
 
-    mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, "mode=0755");
-    mkdir("/dev/pts", 0755);
-    mkdir("/dev/socket", 0755);
-    mount("devpts", "/dev/pts", "devpts", 0, NULL);
+        mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, "mode=0755");
+        mkdir("/dev/pts", 0755);
+        mkdir("/dev/socket", 0755);
+        mount("devpts", "/dev/pts", "devpts", 0, NULL);
+    }
+
     mount("proc", "/proc", "proc", 0, NULL);
     mount("sysfs", "/sys", "sysfs", 0, NULL);
 
